@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -53,21 +54,28 @@ namespace Subastas_JoseValle
                 costumerL = arr[l];
 
             if (r < n)
-                costumerR = arr[l];
+                costumerR = arr[r];
 
 
 
 
             // If left child is larger than root
             if (l < n && costumerL.budget > costumer.budget)
+            {
                 largest = l;
+
+                //Update
+                costumer = arr[largest];
+            }
 
             // If right child is larger than largest so far
             if (r < n && costumerR.budget > costumer.budget)
+            {
                 largest = r;
 
-            //Update
-             costumer = arr[largest];
+                //Update
+                costumer = arr[largest];
+            }
 
             // If largest is not root
             if (largest != i)
@@ -82,22 +90,30 @@ namespace Subastas_JoseValle
             return arr;
         }
 
-        public int deleteRoot(Costumer[] arr, int n)
+        public Costumer deleteRoot(Costumer[] arr, int n)
         {
+
             // Get the last element
-            Costumer lastElement = arr.Last<Costumer>();
+            Costumer lastElement = arr[n-1];
+
+            // Save root element
+            Costumer aux = arr[0];
+
+            //
+            arr[n-1] = null;
+
+            // Decrease size of heap by 1
+            n--;
 
             // Replace root with first element
             arr[0] = lastElement;
 
-            // Decrease size of heap by 1
-            n = n - 1;
-
             // heapify the root node
+           
             heapifyRoot(arr, n, 0);
 
-            // return new size of Heap
-            return n;
+            // return the ereased costumer
+            return aux;
         }
 
         /* A utility function to print array of size n */

@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Subastas_JoseValle;
 using System.IO;
 using System.Collections.Generic;
+using System.Numerics;
 
 static List<Property> readJson()
 {
@@ -37,7 +38,7 @@ static List<Property> readJson()
     return null;
 }
 
-Costumer[] generateMaxHeap(Property property)
+static void generateMaxHeap(Property property)
 {
     Costumer[] costumers = null;
     maxHeap Heap = new maxHeap();
@@ -50,8 +51,28 @@ Costumer[] generateMaxHeap(Property property)
      {
         costumers = Heap.heapify(property.customers, n, i);
      }
-        
-    return costumers;
+    
+    property.customers = costumers;
+    
+}
+
+static void pop(Property property)
+{
+    maxHeap heap = new maxHeap();
+    List<Costumer> ereasedCostumers = new List<Costumer>();
+    int n = property.customers.Length;
+
+    Costumer rejected = heap.deleteRoot(property.customers, n);
+    ereasedCostumers.Add(rejected);
+    n--;
+
+    for (int i = 0; i < property.rejection-1; i++)
+    {
+       
+        rejected = heap.deleteRoot(property.customers, n);
+        ereasedCostumers.Add(rejected);
+        n--;
+    }
 }
 
 
@@ -59,8 +80,8 @@ Costumer[] generateMaxHeap(Property property)
 /*
  *  -OBJETIVOS- 
  * 1) leer el json2 (auction) -listo-
- * 2) Crear un maxHeap
- * 3) Agregar los clientes del json2 al maxHeap
+ * 2) Crear un maxHeap -listo-
+ * 3) Agregar los clientes del json2 al maxHeap -listo-
  * 4) Popear en base a rejection
  * 5) Indicar el ganador
  * 6) Leer json1 (costumers)
@@ -69,16 +90,27 @@ Costumer[] generateMaxHeap(Property property)
  * 9) Imprimir
  * 
  */
-    var properties = readJson();
-    List<Costumer[]> heaps = new List<Costumer[]>();
 
+    //Reading the Json 2
+    var properties = readJson();
+
+    //Creation of the maxHeaps
     foreach (var property in properties)
     {
-        Costumer[] heap = null;
-        heap = generateMaxHeap(property);
-        heaps.Add(heap);
+        generateMaxHeap(property);
     }
+
+    //Extraction proccess.
+    foreach (var property in properties) //TENEMOS UN PROBLEMA AQUI
+    {
+        pop(property);
+    }
+  
+
 
     Console.WriteLine("a");
     Console.ReadKey(); 
+
+
+
 
