@@ -10,7 +10,7 @@ namespace Subastas_JoseValle
     public class Property
     {
         public string property;
-        public List<Costumer> customers;
+        public Costumer[] customers;
         public int rejection;
     }
 }

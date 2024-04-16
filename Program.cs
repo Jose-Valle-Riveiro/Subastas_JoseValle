@@ -37,21 +37,24 @@ static List<Property> readJson()
     return null;
 }
 
-static PriorityQueue<Costumer, long> generateMaxHeap(Property property)
+Costumer[] generateMaxHeap(Property property)
 {
-    //Una priorityQueue funciona igual a un maxHeap
-    var Heap = new PriorityQueue<Costumer, long>();
+    Costumer[] costumers = null;
+    maxHeap Heap = new maxHeap();
+    int n;
+        
+     n = property.customers.Length;
+     costumers = Heap.heapifyRoot(property.customers, n, 0);
 
-    //Se agrega a la cola cada costumer de la propiedad ingresada
-    foreach (var item in property.customers)
-    {
-        long newDPI = Convert.ToInt64(item.dpi);
-
-        Heap.Enqueue(item, newDPI);
-
-    }
-    return Heap;
+     for (int i = 1; i < n; i++)
+     {
+        costumers = Heap.heapify(property.customers, n, i);
+     }
+        
+    return costumers;
 }
+
+
 
 /*
  *  -OBJETIVOS- 
@@ -67,13 +70,15 @@ static PriorityQueue<Costumer, long> generateMaxHeap(Property property)
  * 
  */
     var properties = readJson();
+    List<Costumer[]> heaps = new List<Costumer[]>();
 
     foreach (var property in properties)
     {
-        PriorityQueue<Costumer, long> maxHeap = generateMaxHeap(property);  
-
+        Costumer[] heap = null;
+        heap = generateMaxHeap(property);
+        heaps.Add(heap);
     }
 
     Console.WriteLine("a");
-    Console.ReadKey();
+    Console.ReadKey(); 
 
